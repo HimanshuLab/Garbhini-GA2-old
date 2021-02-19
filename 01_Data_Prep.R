@@ -1,12 +1,8 @@
 # Script to clean dataset and split into train and test
 
 library(readr)
-library(readxl)
-library(reshape2)
 library(dplyr)
-library(caret)
-library(stringr)
-
+library(foreign)
 
 
 return_split_data <- function(data, ratio , seed_value){
@@ -34,39 +30,13 @@ return_split_data <- function(data, ratio , seed_value){
 
 ########  CLEANING FUNCTIONS FOR REMOVING 77777, 88888, 999999
 
-clean_categorical_variables <- function(x){
-  x <- as.character(x)
-  z <- gsub('\\.','',x)
-  z <- strsplit(z,split='')
-  
-  clean <- function(split_var){
-    if( length(split_var) > 1){
-      y <- unique(split_var)
-      if(length(y) == 1){
-        if(y == 7| y==8|y==9){
-          return(TRUE)
-        }else{return(FALSE)}
-      }else{return(FALSE)}
-    }else{return(FALSE)}
-  }
-  
-  logic <- unlist(lapply(z, clean))
-  x[logic] <- NA
-  return(x)
-}
-
 clean_continous_variables_for_age_and_pog <- function(x){
   x <- as.character(x)
   z <- gsub('\\..*','',x)
   for(i in 1:length(z)){
     y <- unlist(strsplit(z[i],split = ''))
-    if(length(y)>1){
-      a <- unique(y)
-      if(length(a)==1){
-        if(a==7|a==8|a==9){
-          x[i] <- NA
-        }
-      }
+    if(length(y) >1 & length(unique(y)) == 1 & unique(y) %in% c(7,8,9)){
+      x[i] <-  NA
     }
   }
   return(as.numeric(x))
@@ -77,15 +47,11 @@ clean_continous_variables <- function(x){
   z <- gsub('\\..*','',x)
   for(i in 1:length(z)){
     y <- unlist(strsplit(z[i],split = ''))
-    if(length(y)>1){
-      a <- unique(y)
-      if(length(a)==1){
-        if(a==7|a==8|a==9){
-          x[i] <- NA
-        }
-      }
+    y <- unlist(strsplit(z[i],split = ''))
+    if(length(y) >1 & length(unique(y)) == 1 & unique(y) %in% c(7,8,9)){
+      x[i] <-  NA
     }
-  }
+   }
   x <- as.numeric(x)
   x[x==0]<-NA
   return(x)
@@ -94,26 +60,20 @@ clean_continous_variables <- function(x){
 
 
 if(!("data_raw" %in% ls())){
-  data_raw <- read.csv("./data/merged_final_dataset.csv",na.strings = c(""," ","NA","88","99", "99.99","999.99","777.77"),header = TRUE )   
-  #old dataset: data_raw <- read_csv("20NOV2018.csv")
-  #data_raw[data_raw %in% c(""," ","NA","88","99", "99.99","777.77")] <- NA
+  data_raw <- read_csv("./data/merged_final_dataset.csv",
+                       na = c(""," ","NA","88","99", "99.99","999.99","777.77"),
+                       col_names = TRUE ) %>% as.data.frame()
 }
-#data_raw <- read.csv("merged_final_dataset.csv", na.strings = c("NA","88","99", "99.99","777.77"),header = TRUE )  
-#df <- data_raw #6498 points
+
 features <- readLines("./data/features_list.txt")
-df <- data_raw[, (colnames(data_raw) %in% c(features))]
+df <- data_raw[, (colnames(data_raw) %in% c(features))] %>% as.data.frame()
 
-
-numeric <- c(split(names(df),sapply(df, function(x) paste(class(x), collapse=" ")))$numeric)
-#categorical <- c(split(names(df),sapply(df, function(x) paste(class(x), collapse=" ")))$integer)
+numeric <- colnames(df)[sapply(1:ncol(df), function(i) class(df[,i]) == "numeric")]
 #cleaning numeric values 
 for( x in numeric){
   df[,x] <- clean_continous_variables(df[,x])
 }
 
-#for( y in categorical){
-#df[,y] <- clean_categorical_variables(df[,y])
-#}
 rm(x,numeric)
 
 #Removing participants that do not have crl value from first trimester
@@ -138,11 +98,6 @@ fwbv_present <- df[grepl("^vdt_fwbv1",colnames(df))] %>%
 
 df <- df[(as_present | fwb_present | fwbv_present ),]
 
-
-Importing Garbhni-1 formula
-Adding first trimester based ga values for each participant with priority in DS and then EM to calculate ga_birth and ga for first trimester
-Note: this method is used to remove abortions based on ga_birth < 20 weeks
-```{r}
 #using Garbhini-1
 predict_ga <- function(crl,
                        method = c("Hadlock",
@@ -277,9 +232,9 @@ data <- data[!is.na(data$bpd) &
                !is.na(data$fl)  ,] 
 
 
-sets<-return_split_data(data, ratio=0.7, seed_value = seed_value)
+sets<-return_split_data(data, ratio=0.7, seed_value = 666)
 train<-sets[[1]]
 test<-sets[[2]]
-write.dta(train,'train_23.dta')
-write.dta(test, 'test_23.dta')
+write.dta(train,'data/train_23.dta')
+write.dta(test, 'data/test_23.dta')
 
