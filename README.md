@@ -20,11 +20,15 @@ models:
 
 05 - XGBoost
 
-06 - Evaluation between models - R2, RMSE
+06 Evaluation between models 
+   - R2, RMSE analysis for all models
+   - Distribution of errors plots
    - Bland Altman analysis 
-   - % Preterm Analysis 
-   - Jacard similarity + visualization plot
-   
-07 - Effect of alternate gold standards - Hadlock
 
-08 - Effect of alternate gold standards - Intergrowth
+07 Preterm Analysis (showing %preterm births)
+   - Jacard similarity 
+   - visualization plot
+   
+08 - Effect of alternate gold standards - Hadlock
+
+09 - Effect of alternate gold standards - Intergrowth
