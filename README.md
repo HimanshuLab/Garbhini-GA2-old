@@ -28,7 +28,11 @@ models:
 07 Preterm Analysis (showing %preterm births)
    - Jacard similarity 
    - visualization plot
-   
-08 - Effect of alternate gold standards - Hadlock
 
-09 - Effect of alternate gold standards - Intergrowth
+08 Postterm Analysis (showing %postterm births)
+   - Jacard similarity 
+   - visualization plot
+   
+09 - Effect of alternate gold standards - Hadlock
+
+10 - Effect of alternate gold standards - Intergrowth
