@@ -5,29 +5,29 @@ temporary repository for cleaning up pre publication
 Scripts:
 
 
-1 - dataset prep
+00 - dataset prep
 
-2 - Descriptive Stats
+01 - Descriptive Stats
 
-3 - Feature Selection
+02 - Feature Selection
 
 
 models:
 
-4 - Polynomial Models
+03 - Polynomial Models
 
-5 - Random Forests
+04 - Random Forests
 
-6 - XGBoost
+05 - XGBoost
 
-7 - Evaluation between models
+06 - Evaluation between models
 
-8 - EValuation of best model with published models
+07 - EValuation of best model with published models
 
-  - Preterm Analysis (could combine with script 7)
+08 - Preterm Analysis (could combine with script 7)
   
   
 
-9 - Effect of alternate gold standards - Hadlock
+09 - Effect of alternate gold standards - Hadlock
 
-10- Effect of alternate gold standards - Intergrowth
+10 - Effect of alternate gold standards - Intergrowth
