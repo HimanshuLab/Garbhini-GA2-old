@@ -182,21 +182,6 @@ plot_preterm<-ggplot(preterm_plot) +
 plot_preterm
 
 
-
-
-preterm_plot<-test[c("random_forest", "ga","diff_rf")]
-plot_preterm<-ggplot(preterm_plot) +
-  geom_point(aes(x=random_forest, y= ga, color= diff_rf), alpha=0.5) +
-  geom_hline(yintercept=37, linetype="dashed", size=0.5) +
-  geom_vline(xintercept=37, linetype="dashed", size=0.5) +
-  scale_color_viridis_c()+
-  labs(x="GA by Garbhini:RF at birth (weeks)", y="True GA (weeks)", 
-       color="Predicted-True GA", caption=paste("n =",nrow(test)))+
-  ggtitle('True GA vs Garbhini:RF')+
-  theme_bw()+ 
-  theme(panel.border = element_rect(colour = "black", fill=NA, size=1), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-plot(plot_preterm)
-
 preterm_plot_xgb <- preterm_test[c("xg_boost", "ga")]
 preterm_plot_xgb[preterm_plot_xgb$xg_boost>=37 & preterm_plot_xgb$ga>=37,'level'] <- 'Term'
 preterm_plot_xgb[preterm_plot_xgb$xg_boost>=37 & preterm_plot_xgb$ga<37,'level'] <- 'Preterm, GA'
@@ -215,20 +200,20 @@ plot_preterm_xgb <- ggplot(preterm_plot_xgb) +
   theme(panel.border = element_rect(colour = "black", fill=NA, size=1), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 plot_preterm_xgb
 
-ggsave(file="../figures/SVG/Figure_3C_1.svg", plot = plot_preterm, width=8, height=8)
-ggsave(file="../figures/SVG/Figure_3C_2.svg", plot = plot_preterm_i, width=8, height=8)
-ggsave(file="../figures/SVG/Figure_3C_3.svg", plot = plot_preterm_h, width=8, height=8)
-ggsave(file="../figures/SVG/Figure_S3_C.svg", plot = plot_preterm_xgb, width=8, height=8)
+ggsave(file="./figures/SVG/Figure_3C_1.svg", plot = plot_preterm, width=8, height=8)
+ggsave(file="./figures/SVG/Figure_3C_2.svg", plot = plot_preterm_i, width=8, height=8)
+ggsave(file="./figures/SVG/Figure_3C_3.svg", plot = plot_preterm_h, width=8, height=8)
+ggsave(file="./figures/SVG/Figure_S3_C.svg", plot = plot_preterm_xgb, width=8, height=8)
 
-ggsave(file="../figures/EPS/Figure_3C_1.eps", plot=plot_preterm, width=8, height=8)
-ggsave(file="../figures/EPS/Figure_3C_2.eps", plot=plot_preterm_i, width=8, height=8)
-ggsave(file="../figures/EPS/Figure_3C_3.eps", plot=plot_preterm_h, width=8, height=8)
-ggsave(file="../figures/SVG/Figure_S3_C.eps", plot = plot_preterm_xgb, width=8, height=8)
+ggsave(file="./figures/EPS/Figure_3C_1.eps", plot=plot_preterm, width=8, height=8)
+ggsave(file="./figures/EPS/Figure_3C_2.eps", plot=plot_preterm_i, width=8, height=8)
+ggsave(file="./figures/EPS/Figure_3C_3.eps", plot=plot_preterm_h, width=8, height=8)
+ggsave(file="./figures/SVG/Figure_S3_C.eps", plot = plot_preterm_xgb, width=8, height=8)
 
-ggsave(file="../figures/PDF/Figure_3C_1.pdf", plot=plot_preterm, width=8, height=8)
-ggsave(file="../figures/PDF/Figure_3C_2.pdf", plot=plot_preterm_i, width=8, height=8)
-ggsave(file="../figures/PDF/Figure_3C_3.pdf", plot=plot_preterm_h, width=8, height=8)
-ggsave(file="../figures/SVG/Figure_S3_C.pdf", plot = plot_preterm_xgb, width=8, height=8)
+ggsave(file="./figures/PDF/Figure_3C_1.pdf", plot=plot_preterm, width=8, height=8)
+ggsave(file="./figures/PDF/Figure_3C_2.pdf", plot=plot_preterm_i, width=8, height=8)
+ggsave(file="./figures/PDF/Figure_3C_3.pdf", plot=plot_preterm_h, width=8, height=8)
+ggsave(file="./figures/SVG/Figure_S3_C.pdf", plot = plot_preterm_xgb, width=8, height=8)
 
 
 
