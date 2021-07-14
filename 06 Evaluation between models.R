@@ -2,6 +2,8 @@ library(dplyr)
 library(tidyverse)
 require(ranger) #for Random Forest model
 require(xgboost) #for XG Boost model
+library(BlandAltmanLeh) #for bland-altman analysis
+library(reshape2)
 
 seed_value <- 666
 seed_range <- 100:599
@@ -179,16 +181,45 @@ figure_s3_dataset$error <- figure_s3_dataset$ga_formula - figure_s3_dataset$ga
 figure_s3_dataset <- figure_s3_dataset %>%
   mutate(formula = factor(formula, levels = c("Hadlock", "Intergrowth-21",'Garbhini-XGB','Garbhini-polynomial','Garbhini-GA2')))
 
-figure_s3 <- ggplot(figure_s3_dataset, aes(y = error, x = formula, fill = formula)) +
+figure_s3a <- ggplot(figure_s3_dataset, aes(y = error, x = formula, fill = formula)) +
   geom_violin() + ggtitle("Distribution of errors on test set ") +
   scale_y_continuous(breaks = -8:8, limits = c(-8,8)) + theme_bw() +
   labs(caption = paste("n = 1430")) +
   theme(legend.position = "none") + coord_flip() 
 
-figure_s3
+figure_s3a
 
 #saving FigureS3 
-ggsave(file="./figures/SVG/Figure_S3.svg", plot=figure_s3, width=10, height=8)
-ggsave(file="./figures/EPS/Figure_s3.eps", plot=figure_s3, width=10, height=8)
-ggsave(file="./figures/pdf/Figure_s3.pdf", plot=figure_s3, width=10, height=8)
+ggsave(file="./figures/SVG/Figure_S3_A.svg", plot=figure_s3a, width=10, height=8)
+ggsave(file="./figures/EPS/Figure_S3_A.eps", plot=figure_s3a, width=10, height=8)
+ggsave(file="./figures/pdf/Figure_S3_A.pdf", plot=figure_s3a, width=10, height=8)
+
+####################################################################################################
+
+#                       BLAND-ALTMAN ANALYSIS 
+
+####################################################################################################
+
+
+predicted_test <- subset(test, select = -c(bpd,ofd,hp,ap,garbhini_poly,fl,ga_birth))
+pairwise_BA_test <- sapply(predicted_test, function(i){
+  sapply(predicted_test,function(j){
+    BA_stats <- bland.altman.stats(i,j, conf.int = 0.95)
+    paste0(BA_stats$mean.diffs %>% round(3),
+           "( ",BA_stats$lower.limit %>% round(3),
+           ", ",BA_stats$upper.limit %>% round(3),")")
+    
+  })
+})
+
+# displaying results
+table4 <- matrix(nrow = ncol(predicted_test), ncol = ncol(predicted_test),
+                 dimnames = list(colnames(predicted_test),colnames(predicted_test)))
+table4[upper.tri(table4)] <- pairwise_BA_test[upper.tri(pairwise_BA_test)]
+
+table4[lower.tri(table4)] <- pairwise_BA_test[lower.tri(pairwise_BA_test)]
+table4 %>% as.data.frame()
+
+# saving predicted test dataset
+write_dta('./datasets/predicted_test.dta', predicted_test)
 
