@@ -1,5 +1,4 @@
 # Garbhini-GA2
-temporary repository for cleaning up pre publication
 
 
 Scripts:
