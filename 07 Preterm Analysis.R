@@ -4,8 +4,8 @@
 
 ####################################################################################################
 
-test <- read_dta('./datasets/test_23.dta')
-preterm_test <- read_dta('./datasets/predicted_test.dta')
+test <- read_dta('./datasets/datasets_old/test_23.dta')
+preterm_test <- read_dta('./datasets/datasets_old/predicted_test.dta')
 
 preterm_test <- preterm_test + (test$ga_birth - test$ga)
 preterm_test$ga <- test$ga_birth
@@ -203,17 +203,17 @@ plot_preterm_xgb
 ggsave(file="./figures/SVG/Figure_3C_1.svg", plot = plot_preterm, width=8, height=8)
 ggsave(file="./figures/SVG/Figure_3C_2.svg", plot = plot_preterm_i, width=8, height=8)
 ggsave(file="./figures/SVG/Figure_3C_3.svg", plot = plot_preterm_h, width=8, height=8)
-ggsave(file="./figures/SVG/Figure_S3_C.svg", plot = plot_preterm_xgb, width=8, height=8)
+ggsave(file="./figures/SVG/Figure_S3_B.svg", plot = plot_preterm_xgb, width=8, height=8)
 
 ggsave(file="./figures/EPS/Figure_3C_1.eps", plot=plot_preterm, width=8, height=8)
 ggsave(file="./figures/EPS/Figure_3C_2.eps", plot=plot_preterm_i, width=8, height=8)
 ggsave(file="./figures/EPS/Figure_3C_3.eps", plot=plot_preterm_h, width=8, height=8)
-ggsave(file="./figures/SVG/Figure_S3_C.eps", plot = plot_preterm_xgb, width=8, height=8)
+ggsave(file="./figures/SVG/Figure_S3_B.eps", plot = plot_preterm_xgb, width=8, height=8)
 
 ggsave(file="./figures/PDF/Figure_3C_1.pdf", plot=plot_preterm, width=8, height=8)
 ggsave(file="./figures/PDF/Figure_3C_2.pdf", plot=plot_preterm_i, width=8, height=8)
 ggsave(file="./figures/PDF/Figure_3C_3.pdf", plot=plot_preterm_h, width=8, height=8)
-ggsave(file="./figures/SVG/Figure_S3_C.pdf", plot = plot_preterm_xgb, width=8, height=8)
+ggsave(file="../datasets_old/Figure_S3_B.pdf", plot = plot_preterm_xgb, width=8, height=8)
 
 
 
