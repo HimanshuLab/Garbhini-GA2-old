@@ -1,4 +1,4 @@
-# second_trim_temp
+# Garbhini-GA2
 temporary repository for cleaning up pre publication
 
 
